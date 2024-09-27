@@ -10,6 +10,11 @@ Short summary on functionality and used technologies.
 
 ![version](https://img.shields.io/badge/version-1.18.2-green.svg)
 
+
+## Applcacion version
+- gulp-cli@3.0.0
+- npm version: 10.5.2
+- node version: 18.20.2
 ## Applies to
 
 - [SharePoint Framework](https://aka.ms/spfx)
