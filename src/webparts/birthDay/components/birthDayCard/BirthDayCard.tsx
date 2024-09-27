@@ -44,6 +44,9 @@ export default class BirthDayCard extends React.Component<IBirthDayCardProps, IB
 
     public render(): React.ReactElement<IBirthDayCardProps> {
         const { Name, Birthdate } = this.props.userInfo;
+        const formatter = new Intl.DateTimeFormat('es-CO', { month: 'long' });
+        const formattedMonth = formatter.format(Birthdate);
+        
         return (
             <section className='birth-card-container'>
                 <div className='birth-icon-container'>
@@ -54,7 +57,7 @@ export default class BirthDayCard extends React.Component<IBirthDayCardProps, IB
                         {Name}
                     </h3>
                     <p>
-                        {Birthdate.toDateString()}
+                        {`${Birthdate.getDate()} ${formattedMonth}`}
                     </p>
                 </article>
             </section>
