@@ -111,6 +111,7 @@ export default class BirthDay extends React.Component<IBirthDayProps, IBirthdayS
     } = this.props;
 
     const {birthdayUsers} = this.state;
+    const actualDateTime = new Date();
 
     return (
       <main className={`${styles.birthDay} ${hasTeamsContext ? styles.teams : ''}`}>
@@ -118,14 +119,16 @@ export default class BirthDay extends React.Component<IBirthDayProps, IBirthdayS
         <div className={styles.birthContainer}>
           {
             birthdayUsers.length > 0 && 
-            birthdayUsers.filter((userBirthInfo: IUserBirthdate) => userBirthInfo.Birthdate > new Date() && userBirthInfo.Birthdate.getMonth() === new Date().getMonth()).length > 0 ?
+            birthdayUsers.filter((userBirthInfo: IUserBirthdate) => 
+              userBirthInfo.Birthdate.getMonth() === actualDateTime.getMonth() &&
+              userBirthInfo.Birthdate.getDate() >= actualDateTime.getDate() )
+              .length > 0 ?
             birthdayUsers
             .sort((a: IUserBirthdate, b: IUserBirthdate) => new Date(a.Birthdate).getTime() - new Date(b.Birthdate).getTime())
             .map((userBirthInfo:IUserBirthdate, index:number) => {
-              if (userBirthInfo.Birthdate > new Date())
-                return(
-                  <BirthDayCard key={index} context={this.props.context} userInfo={userBirthInfo} />
-                )
+              return(
+                <BirthDayCard key={index} context={this.props.context} userInfo={userBirthInfo} />
+              )
             })
             :
             <h4>No hay cumpleañeros este mes</h4>
