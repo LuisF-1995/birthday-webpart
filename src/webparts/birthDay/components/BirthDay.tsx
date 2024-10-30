@@ -112,19 +112,21 @@ export default class BirthDay extends React.Component<IBirthDayProps, IBirthdayS
 
     const {birthdayUsers} = this.state;
     const actualDateTime = new Date();
+    const birthDayUsersFilteredByMonth: IUserBirthdate[] = birthdayUsers.length > 0 ? 
+    birthdayUsers.filter((userBirthInfo: IUserBirthdate) => 
+      userBirthInfo.Birthdate.getMonth() === actualDateTime.getMonth() &&
+      userBirthInfo.Birthdate.getDate() >= actualDateTime.getDate() 
+    ) : [];
 
     return (
       <main className={`${styles.birthDay} ${hasTeamsContext ? styles.teams : ''}`}>
         <h2>Cumpleaños</h2>
         <div className={styles.birthContainer}>
           {
-            birthdayUsers.length > 0 && 
-            birthdayUsers.filter((userBirthInfo: IUserBirthdate) => 
-              userBirthInfo.Birthdate.getMonth() === actualDateTime.getMonth() &&
-              userBirthInfo.Birthdate.getDate() >= actualDateTime.getDate() )
-              .length > 0 ?
-            birthdayUsers
-            .sort((a: IUserBirthdate, b: IUserBirthdate) => new Date(a.Birthdate).getTime() - new Date(b.Birthdate).getTime())
+            birthDayUsersFilteredByMonth.length > 0 ?
+            birthDayUsersFilteredByMonth
+            .sort((a: IUserBirthdate, b: IUserBirthdate) => 
+              new Date(a.Birthdate).getTime() - new Date(b.Birthdate).getTime())
             .map((userBirthInfo:IUserBirthdate, index:number) => {
               return(
                 <BirthDayCard key={index} context={this.props.context} userInfo={userBirthInfo} />
