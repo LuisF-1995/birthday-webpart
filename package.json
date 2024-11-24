@@ -12,6 +12,8 @@
     "test": "gulp test"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@fluentui/react": "^8.106.4",
     "@microsoft/sp-component-base": "1.18.2",
     "@microsoft/sp-core-library": "1.18.2",
@@ -19,6 +21,8 @@
     "@microsoft/sp-office-ui-fabric-core": "1.18.2",
     "@microsoft/sp-property-pane": "1.18.2",
     "@microsoft/sp-webpart-base": "1.18.2",
+    "@mui/icons-material": "^6.1.8",
+    "@mui/material": "^5.15.0",
     "@pnp/sp": "^4.5.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",

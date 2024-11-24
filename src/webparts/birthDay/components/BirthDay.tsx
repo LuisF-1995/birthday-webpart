@@ -6,10 +6,13 @@ import { PNP } from '../../../services/Util';
 import { ISiteUserInfo } from '@pnp/sp/presets/all';
 import Swal from 'sweetalert2';
 import { IUserBirthdate } from '../../models/IUserBirthdate';
+import { FormControlLabel } from '@mui/material';
+import { IOSSwitch } from './customSwitch/CustomSwitch';
 
 interface IBirthdayStates {
   birthdayUsers:IUserBirthdate[];
   birthdayGroupName:string;
+  showRestingBirthdays:boolean;
 }
 
 export default class BirthDay extends React.Component<IBirthDayProps, IBirthdayStates> {
@@ -22,6 +25,7 @@ export default class BirthDay extends React.Component<IBirthDayProps, IBirthdayS
     this.state = {
       birthdayGroupName:'',
       birthdayUsers: [],
+      showRestingBirthdays:false
     };
   }
   async componentDidMount(): Promise<void> {
@@ -110,17 +114,30 @@ export default class BirthDay extends React.Component<IBirthDayProps, IBirthdayS
       hasTeamsContext,
     } = this.props;
 
-    const {birthdayUsers} = this.state;
+    const {birthdayUsers, showRestingBirthdays} = this.state;
     const actualDateTime = new Date();
     const birthDayUsersFilteredByMonth: IUserBirthdate[] = birthdayUsers.length > 0 ? 
-    birthdayUsers.filter((userBirthInfo: IUserBirthdate) => 
-      userBirthInfo.Birthdate.getMonth() === actualDateTime.getMonth() &&
-      userBirthInfo.Birthdate.getDate() >= actualDateTime.getDate() 
-    ) : [];
+                                        birthdayUsers.filter((userBirthInfo: IUserBirthdate) => {
+                                          const isSameMonth = userBirthInfo.Birthdate.getMonth() === actualDateTime.getMonth();
+                                          if (showRestingBirthdays) {
+                                            return isSameMonth && userBirthInfo.Birthdate.getDate() >= actualDateTime.getDate();
+                                          } else {
+                                            return isSameMonth;
+                                          }
+                                        }) : [];
 
     return (
       <main className={`${styles.birthDay} ${hasTeamsContext ? styles.teams : ''}`}>
         <h2>Cumpleaños</h2>
+        <FormControlLabel
+          label={`Ver solo cumpleañeros faltantes de ${new Intl.DateTimeFormat('es-CO', { month: 'long' }).format(new Date())}`}
+          labelPlacement='start'
+          value={showRestingBirthdays}
+          checked={showRestingBirthdays}
+          onChange={() => {this.setState({showRestingBirthdays: !showRestingBirthdays})}}
+          sx={{margin:'0px 0px 10px 0px'}}
+          control={<IOSSwitch sx={{marginLeft:1}} />}
+        />
         <div className={styles.birthContainer}>
           {
             birthDayUsersFilteredByMonth.length > 0 ?
